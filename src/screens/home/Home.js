@@ -1,6 +1,6 @@
 import React from 'react'
 import "./Home.css"
-import Header from '../../common/header/Header'
+import { Link } from 'react-router-dom'
 import moviesData from '../../common/moviesData'
 import { useState } from 'react';
 import { createTheme } from '@material-ui/core/styles';
@@ -11,7 +11,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {
-  FormControl, MenuItem, Select, FormGroup, Checkbox, Button, InputLabel, Input
+  FormControl, MenuItem, Select, Button, InputLabel, Input
 } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
 
@@ -22,7 +22,9 @@ import Grid from "@material-ui/core/Grid";
 
 
 const Home = () => {
+ 
   const theme = createTheme();
+
   const [MovieData, setMovieData] = useState(moviesData);
   const [filterData, setFilterData] = useState(moviesData);
    const [inputValue, setInputValue] = useState({
@@ -32,11 +34,11 @@ const Home = () => {
     ReleaseDatestart: "",
     ReleaseDateEnd: ""
   });
-  const { Moviename, Genres, Artists, ReleaseDateEnd, ReleaseDatestart } = inputValue;
+  const { Moviename,  ReleaseDateEnd, ReleaseDatestart } = inputValue;
 
 
   const handleInputChange = (e) => {
-   console.log(e.target.value);
+  
     setInputValue({ ...inputValue, [e.target.name]: [e.target.value]})
     
   }
@@ -68,7 +70,7 @@ const Home = () => {
           console.log(movie.genres+":"+inputValue.Genres[0]);
           
            
-            if((inputValue.Genres[0].join()==movie.genres.join())){
+            if((inputValue.Genres[0].join()===movie.genres.join())){
               isCorrectValue=true;
             }
           
@@ -79,7 +81,7 @@ const Home = () => {
           filteredMovie.push(movie);
         }
       })
-      console.log(filteredMovie);
+     
       setFilterData(filteredMovie);
     
     } catch (error) {
@@ -90,7 +92,7 @@ const Home = () => {
 
   return (
     <div>
-      <Header />
+   
       <h1><span>Upcoming Movies</span></h1>
 
       <div style={{
@@ -123,7 +125,7 @@ const Home = () => {
 
             {filterData.map((movie,index) => (
               <ImageListItem key={`${index}_movie1`}>
-                <a href=""><img src={movie.poster_url} alt={movie.title} /> </a>
+                <Link to={`/details/${movie.title}`}><img src={movie.poster_url} alt={movie.title} /> </Link>
 
                 <ImageListItemBar
                   title={movie.title}
